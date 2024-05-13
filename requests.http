@@ -1,0 +1,5 @@
+### Set a color
+GET http://localhost:3000/auth/colors/pruple
+
+### Get the color
+GET http://localhost:3000/auth/colors
