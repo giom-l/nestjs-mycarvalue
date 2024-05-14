@@ -16,9 +16,17 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       ),
       autoLoadEntities: true,
       migrationsRun: migrationsRun,
-      migrations: migrationsRun ? ['src/migrations/*{.js,.ts}'] : null,
     };
 
+    // Specify migrations field for e2e testing otherwise it does not find it.
+    // Not sure why...
+    if (process.env.NODE_ENV === 'test' && migrationsRun) {
+      Object.assign(options, {
+        migrations: ['src/migrations/*{.ts,.js}'],
+      });
+    }
+
+    // Add specifics for production (here heroku)
     if (process.env.NODE_ENV === 'production') {
       Object.assign(options, {
         url: process.env.DATABASE_URL,
@@ -29,6 +37,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         },
       });
     } else {
+      // If not production (hence no url, just use the database name)
+      // It won't work in all combination for it work for this learning project
       Object.assign(options, {
         database: this.configService.get<string>('DB_NAME'),
       });

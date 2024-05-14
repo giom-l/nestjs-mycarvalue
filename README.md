@@ -38,3 +38,13 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Test locally with heroku
+```bash
+# Retrieve all your config key from heroku env
+heroku config:get CONFIG_KEY -s >> .env
+
+# Run your app locally 
+heroku local
+```
+
+
