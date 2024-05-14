@@ -14,7 +14,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       synchronize: JSON.parse(
         this.configService.get<string>('DB_SYNCHRONIZE', 'false'),
       ),
-      database: this.configService.get<string>('DB_NAME'),
       autoLoadEntities: true,
       migrationsRun: migrationsRun,
       migrations: migrationsRun ? ['src/migrations/*{.js,.ts}'] : null,
@@ -28,6 +27,10 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             this.configService.get<string>('SSL_REJECT_UNAUTH'),
           ),
         },
+      });
+    } else {
+      Object.assign(options, {
+        database: this.configService.get<string>('DB_NAME'),
       });
     }
 
