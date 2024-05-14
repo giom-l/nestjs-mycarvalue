@@ -17,7 +17,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('DB_NAME'),
       autoLoadEntities: true,
       migrationsRun: migrationsRun,
-      //   migrations: migrationsRun ? ['src/migrations/*{.js,.ts}'] : null,
+      migrations: migrationsRun ? ['src/migrations/*{.js,.ts}'] : null,
     };
 
     if (process.env.NODE_ENV === 'production') {
