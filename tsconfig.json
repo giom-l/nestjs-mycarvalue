@@ -19,6 +19,6 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "typeRoots": ["./@types", "./node_modules/@types"],
-    "allowJs": true // to allow migrations to run during e2e tests
+    "allowJs": true // to allow migrations to run
   }
 }

@@ -9,22 +9,23 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     const migrationsRun = JSON.parse(
       this.configService.get<string>('MIGRATIONS_RUN', 'false'),
     );
+    const migrationsPath =
+      process.env.NODE_ENV === 'production' ? 'dist' : 'src';
+
     const options = {
       type: this.configService.get<any>('DB_TYPE'),
       synchronize: JSON.parse(
         this.configService.get<string>('DB_SYNCHRONIZE', 'false'),
       ),
       autoLoadEntities: true,
+      //   entities: [`**/*.entity.${fileExtensionToUse}`],
       migrationsRun: migrationsRun,
+      // Use process.cwd() to not depend where this file sits in
+      // and always use the project root
+      migrations: migrationsRun
+        ? [process.cwd() + `/${migrationsPath}/migrations/*{.js,.ts}`]
+        : [],
     };
-
-    // Specify migrations field for e2e testing otherwise it does not find it.
-    // Not sure why...
-    if (process.env.NODE_ENV === 'test' && migrationsRun) {
-      Object.assign(options, {
-        migrations: ['src/migrations/*{.ts,.js}'],
-      });
-    }
 
     // Add specifics for production (here heroku)
     if (process.env.NODE_ENV === 'production') {
